@@ -38,17 +38,17 @@ Run the React app:
 npm run dev
 The app will be accessible at http://localhost:5173.
 
-Features
+# Features
 Displays a gallery of images with thumbnails.
 Clicking on a thumbnail shows details about the selected image, including metadata.
 Load more button toggles between displaying a subset or all metadata.
 Download button allows downloading the selected image.
 Notes
-The client assumes the server is running at http://localhost:5173.
+The client assumes the server is running at http://localhost:3000.
 
-Image previews and processed images are stored in the /images directory.
+# Image previews and processed images are stored in the /images directory.
 
-HOW TO RUN: 
+# HOW TO RUN: 
 1. go to backend folder
 2. npm install
 3. npm start
@@ -60,3 +60,13 @@ HOW TO RUN:
 8.npm install
 9.npm run dev
 10.Project starts from localhost:5173
+
+
+# View screenshots of images
+![Screenshot (516)](https://github.com/nutankumari211/Image/assets/31533479/491b6698-7a8f-4713-a0eb-1de61a5cf3c3)
+
+![Screenshot (517)](https://github.com/nutankumari211/Image/assets/31533479/389dca3e-c0ef-4f34-aaae-45ae379de5e2)
+
+![Screenshot (518)](https://github.com/nutankumari211/Image/assets/31533479/89bd37d8-a62f-44e7-b0c4-723f7a7b9dd5)
+
+
