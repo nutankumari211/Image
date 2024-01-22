@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
@@ -10,10 +8,6 @@ const path = require('path'); // Import 'path' module for working with file path
 const app = express();
 const port = 3000;
 app.use(cors());
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
-
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage(); // Use memory storage for handling files in memory
@@ -62,53 +56,47 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Update the route handler for handling file uploads
 app.post('/upload', upload.any('image'), async (req, res) => {
-    try {
-      // Loop through each uploaded file
-      for (const file of req.files) {
-        const imagePath = `uploaded_${file.originalname}`;
-        const previewImagePath = `preview_${file.originalname}.jpg`;
-  
-        // Save the uploaded image
-        fs.writeFileSync(imagePath, file.buffer);
-  
-        // Extract and save the preview image
-        await extractPreview(imagePath, path.join(__dirname, 'images', previewImagePath));
-  
-        // Read image metadata
-        const metadata = await exiftool.read(imagePath, ['-File:all']);
-        console.log('Image Metadata:', metadata);
-  
-        // Store information about processed image
-        processedImages.push({
-          image: imagePath,
-          preview: previewImagePath,
-          fileName: file.originalname,
-          fileSize: file.size,
-          metadata: metadata,
-        });
-  
-        console.log(processedImages);
-        console.log(previewImagePath);
-      }
-  
-      res.status(200).send('Images processed successfully');
-    } catch (error) {
-      console.error('Error processing image:', error);
-      res.status(500).send('Error processing image');
-    }
-  });
-  
+try {
+// Loop through each uploaded file
+for (const file of req.files) {
+const imagePath = `uploaded_${file.originalname}`;
+const previewImagePath = `preview_${file.originalname}.jpg`;
+
+// Save the uploaded image
+fs.writeFileSync(imagePath, file.buffer);
+
+// Extract and save the preview image
+await extractPreview(imagePath, path.join(__dirname, 'images', previewImagePath));
+
+// Read image metadata
+const metadata = await exiftool.read(imagePath, ['-File:all']);
+console.log('Image Metadata:', metadata);
+
+// Store information about processed image
+processedImages.push({
+image: imagePath,
+preview: previewImagePath,
+fileName: file.originalname,
+fileSize: file.size,
+metadata: metadata,
+});
+
+console.log(processedImages);
+console.log(previewImagePath);
+}
+
+res.status(200).send('Images processed successfully');
+} catch (error) {
+console.error('Error processing image:', error);
+res.status(500).send('Error processing image');
+}
+});
+
 
 // Route handler for retrieving processed images
 app.get('/images', (req, res) => {
 res.status(200).json(processedImages);
 });
-
-// Handle React routing, return all requests to React app
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
-    });
-    
 
 app.listen(port, () => {
 console.log(`Server is running at http://localhost:${port}`);
